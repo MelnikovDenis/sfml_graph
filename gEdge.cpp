@@ -1,35 +1,35 @@
 #include "Graph.h"
 float gEdge::ARROW_HEIGHT = 15;
 
-//получение длины вектора
+//РїРѕР»СѓС‡РµРЅРёРµ РґР»РёРЅС‹ РІРµРєС‚РѕСЂР°
 float gEdge::getLength(const Vector2f& vec) {
 	return sqrtf(pow(vec.x, 2) + pow(vec.y, 2));
 }
-//получение единичного вектора
+//РїРѕР»СѓС‡РµРЅРёРµ РµРґРёРЅРёС‡РЅРѕРіРѕ РІРµРєС‚РѕСЂР°
 Vector2f gEdge::getUnitVector(const Vector2f& vec) {
 	return Vector2f(vec.x / getLength(vec), vec.y / getLength(vec));
 }
-//получение координат вектора на основе точек начала и конца
+//РїРѕР»СѓС‡РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ РІРµРєС‚РѕСЂР° РЅР° РѕСЃРЅРѕРІРµ С‚РѕС‡РµРє РЅР°С‡Р°Р»Р° Рё РєРѕРЅС†Р°
 Vector2f  gEdge::getVector(const Vector2f& startPoint, const Vector2f& endPoint) {
 	return Vector2f(endPoint.x - startPoint.x, endPoint.y - startPoint.y);
 }
-//получение координат конца высоты треугольника образующего первую стрелочку
+//РїРѕР»СѓС‡РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ РєРѕРЅС†Р° РІС‹СЃРѕС‚С‹ С‚СЂРµСѓРіРѕР»СЊРЅРёРєР° РѕР±СЂР°Р·СѓСЋС‰РµРіРѕ РїРµСЂРІСѓСЋ СЃС‚СЂРµР»РѕС‡РєСѓ
 Vector2f gEdge::getArrowHeightPoint1() {
 	Vector2f arrowHeightVector = getUnitVector(getVector(mainLine[0].position, mainLine[1].position));
 	arrowHeightVector = Vector2f(arrowHeightVector.x * ARROW_HEIGHT, arrowHeightVector.y * ARROW_HEIGHT);
 	return Vector2f(getCenter(mainLine[0].position, mainLine[1].position).x - arrowHeightVector.x, getCenter(mainLine[0].position, mainLine[1].position).y - arrowHeightVector.y);
 }
-//получение координат конца высоты треугольника образующего вторую стрелочку
+//РїРѕР»СѓС‡РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ РєРѕРЅС†Р° РІС‹СЃРѕС‚С‹ С‚СЂРµСѓРіРѕР»СЊРЅРёРєР° РѕР±СЂР°Р·СѓСЋС‰РµРіРѕ РІС‚РѕСЂСѓСЋ СЃС‚СЂРµР»РѕС‡РєСѓ
 Vector2f gEdge::getArrowHeightPoint2() {
 	Vector2f arrowHeightVector = getUnitVector(getVector(mainLine[1].position, mainLine[0].position));
 	arrowHeightVector = Vector2f(arrowHeightVector.x * ARROW_HEIGHT, arrowHeightVector.y * ARROW_HEIGHT);
 	return Vector2f(getCenter(mainLine[0].position, mainLine[1].position).x - arrowHeightVector.x, getCenter(mainLine[0].position, mainLine[1].position).y - arrowHeightVector.y);
 }
-//центр первой половины от старта (там будет размещаться текст)
+//С†РµРЅС‚СЂ РїРµСЂРІРѕР№ РїРѕР»РѕРІРёРЅС‹ РѕС‚ СЃС‚Р°СЂС‚Р° (С‚Р°Рј Р±СѓРґРµС‚ СЂР°Р·РјРµС‰Р°С‚СЊСЃСЏ С‚РµРєСЃС‚)
 Vector2f gEdge::getStartHalfCenter() {
 	return getCenter(getCenter(mainLine[0].position, mainLine[1].position), mainLine[0].position);
 }
-//центр второй половины от старта (там будет размещаться текст)
+//С†РµРЅС‚СЂ РІС‚РѕСЂРѕР№ РїРѕР»РѕРІРёРЅС‹ РѕС‚ СЃС‚Р°СЂС‚Р° (С‚Р°Рј Р±СѓРґРµС‚ СЂР°Р·РјРµС‰Р°С‚СЊСЃСЏ С‚РµРєСЃС‚)
 Vector2f gEdge::getEndHalfCenter() {
 	return getCenter(getCenter(mainLine[0].position, mainLine[1].position), mainLine[1].position);
 }
@@ -62,7 +62,7 @@ Vector2f gEdge::getCenter(const Vector2f& startPoint, const Vector2f& endPoint) 
 	return Vector2f((startPoint.x + endPoint.x) / 2, (startPoint.y + endPoint.y) / 2);
 }
 void gEdge::setPosition(const Vector2f& startPoint, const Vector2f& endPoint) {
-	const float ARROW_HALF_SIDE = ARROW_HEIGHT / sqrtf(3); //половина длины стороны стрелки
+	const float ARROW_HALF_SIDE = ARROW_HEIGHT / sqrtf(3); //РїРѕР»РѕРІРёРЅР° РґР»РёРЅС‹ СЃС‚РѕСЂРѕРЅС‹ СЃС‚СЂРµР»РєРё
 
 	mainLine[0].position = startPoint;
 	mainLine[1].position = endPoint;
@@ -70,28 +70,28 @@ void gEdge::setPosition(const Vector2f& startPoint, const Vector2f& endPoint) {
 	Vector2f center = getCenter(mainLine[0].position, mainLine[1].position);
 	Vector2f mainVector = getVector(mainLine[0].position, mainLine[1].position);
 
-	float tan_a = mainVector.x / mainVector.y; //тангенс угла наклона основания стрелки
-	float atan_a = atanf(tan_a); //арктангенс угла наклона основания стрелки	
-	float yOffset = abs(sinf(atan_a)) * ARROW_HALF_SIDE; //смещение для вершины по оси y
-	float xOffset = cosf(atan_a) * ARROW_HALF_SIDE; //смещение для вершины по оси x
+	float tan_a = mainVector.x / mainVector.y; //С‚Р°РЅРіРµРЅСЃ СѓРіР»Р° РЅР°РєР»РѕРЅР° РѕСЃРЅРѕРІР°РЅРёСЏ СЃС‚СЂРµР»РєРё
+	float atan_a = atanf(tan_a); //Р°СЂРєС‚Р°РЅРіРµРЅСЃ СѓРіР»Р° РЅР°РєР»РѕРЅР° РѕСЃРЅРѕРІР°РЅРёСЏ СЃС‚СЂРµР»РєРё	
+	float yOffset = abs(sinf(atan_a)) * ARROW_HALF_SIDE; //СЃРјРµС‰РµРЅРёРµ РґР»СЏ РІРµСЂС€РёРЅС‹ РїРѕ РѕСЃРё y
+	float xOffset = cosf(atan_a) * ARROW_HALF_SIDE; //СЃРјРµС‰РµРЅРёРµ РґР»СЏ РІРµСЂС€РёРЅС‹ РїРѕ РѕСЃРё x
 	if (tan_a > 0) xOffset *= -1;
 	if (fromStartLength != NOVALUE) {
 		Vector2f arrowHeightPoint1 = getArrowHeightPoint1();
-		//получение координат первой вершины первой стрелки
+		//РїРѕР»СѓС‡РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ РїРµСЂРІРѕР№ РІРµСЂС€РёРЅС‹ РїРµСЂРІРѕР№ СЃС‚СЂРµР»РєРё
 		fromStartArrow[0].position = Vector2f(arrowHeightPoint1.x - xOffset, arrowHeightPoint1.y - yOffset);
-		//получение координат второй вершины первой стрелки
+		//РїРѕР»СѓС‡РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ РІС‚РѕСЂРѕР№ РІРµСЂС€РёРЅС‹ РїРµСЂРІРѕР№ СЃС‚СЂРµР»РєРё
 		fromStartArrow[1].position = center;
-		//получение координат третьей вершины первой стрелки
+		//РїРѕР»СѓС‡РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ С‚СЂРµС‚СЊРµР№ РІРµСЂС€РёРЅС‹ РїРµСЂРІРѕР№ СЃС‚СЂРµР»РєРё
 		fromStartArrow[2].position = Vector2f(arrowHeightPoint1.x + xOffset, arrowHeightPoint1.y + yOffset);
 		fromStartText.setPosition(getStartHalfCenter());
 	}
 	if (fromEndLength != NOVALUE) {
 		Vector2f arrowHeightPoint2 = getArrowHeightPoint2();
-		//получение координат первой вершины второй стрелки
+		//РїРѕР»СѓС‡РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ РїРµСЂРІРѕР№ РІРµСЂС€РёРЅС‹ РІС‚РѕСЂРѕР№ СЃС‚СЂРµР»РєРё
 		fromEndArrow[0].position = Vector2f(arrowHeightPoint2.x - xOffset, arrowHeightPoint2.y - yOffset);
-		//получение координат второй вершины второй стрелки
+		//РїРѕР»СѓС‡РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ РІС‚РѕСЂРѕР№ РІРµСЂС€РёРЅС‹ РІС‚РѕСЂРѕР№ СЃС‚СЂРµР»РєРё
 		fromEndArrow[1].position = center;
-		//получение координат третьей вершины второй стрелки
+		//РїРѕР»СѓС‡РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ С‚СЂРµС‚СЊРµР№ РІРµСЂС€РёРЅС‹ РІС‚РѕСЂРѕР№ СЃС‚СЂРµР»РєРё
 		fromEndArrow[2].position = Vector2f(arrowHeightPoint2.x + xOffset, arrowHeightPoint2.y + yOffset);
 		fromEndText.setPosition(getEndHalfCenter());
 	}

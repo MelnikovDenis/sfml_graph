@@ -9,26 +9,26 @@ bool AdjacencyMatrix::findWay(std::vector<std::vector<int>> matrix) {
 	return isFind;
 }
 std::vector<AdjacencyMatrix::Tuple<int, int>>& AdjacencyMatrix::getWayParts() {
-	//массив для записи в него результатов (результатом будет пара индксов откуда-куда)
+	//РјР°СЃСЃРёРІ РґР»СЏ Р·Р°РїРёСЃРё РІ РЅРµРіРѕ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ (СЂРµР·СѓР»СЊС‚Р°С‚РѕРј Р±СѓРґРµС‚ РїР°СЂР° РёРЅРґРєСЃРѕРІ РѕС‚РєСѓРґР°-РєСѓРґР°)
 	static std::vector<Tuple<int, int>> wayParts;
 
-	//копия матрицы смежности
+	//РєРѕРїРёСЏ РјР°С‚СЂРёС†С‹ СЃРјРµР¶РЅРѕСЃС‚Рё
 	std::vector<std::vector<int>> replica(getVerticesCount());
 	for (unsigned int i = 0; i < getVerticesCount(); ++i)
 		copy(matrix[i].begin(), matrix[i].end(), back_inserter(replica[i]));
 
 	while (findWay(replica)) {
-		//дополнительный столбец, в котором хранятся минимумы строк
+		//РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Р№ СЃС‚РѕР»Р±РµС†, РІ РєРѕС‚РѕСЂРѕРј С…СЂР°РЅСЏС‚СЃСЏ РјРёРЅРёРјСѓРјС‹ СЃС‚СЂРѕРє
 		std::vector<int> minColumn(getVerticesCount());
 		for (unsigned int i = 0; i < getVerticesCount(); ++i)
 			minColumn[i] = *min_element(replica[i].begin(), replica[i].end());
 
-		//редукция строк
+		//СЂРµРґСѓРєС†РёСЏ СЃС‚СЂРѕРє
 		for (unsigned int i = 0; i < getVerticesCount(); ++i) for_each(replica[i].begin(), replica[i].end(), [&i, &minColumn](int& num)->void {
 			if (num != NOVALUE) num -= minColumn[i];
 		});
 
-		//дополнительная строка, в которой хранятся минимумы столбцов
+		//РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅР°СЏ СЃС‚СЂРѕРєР°, РІ РєРѕС‚РѕСЂРѕР№ С…СЂР°РЅСЏС‚СЃСЏ РјРёРЅРёРјСѓРјС‹ СЃС‚РѕР»Р±С†РѕРІ
 		std::vector<int> minRow(getVerticesCount());
 		for (unsigned int i = 0; i < getVerticesCount(); ++i) {
 			int min = NOVALUE;
@@ -38,14 +38,14 @@ std::vector<AdjacencyMatrix::Tuple<int, int>>& AdjacencyMatrix::getWayParts() {
 			minRow[i] = min;
 		}
 
-		//реукция столбцов
+		//СЂРµСѓРєС†РёСЏ СЃС‚РѕР»Р±С†РѕРІ
 		for (unsigned int i = 0; i < getVerticesCount(); ++i) {
 			for (unsigned int j = 0; j < getVerticesCount(); ++j) {
 				if (replica[j][i] != NOVALUE) replica[j][i] -= minRow[i];
 			}
 		}
 
-		//производим оценку каждого 0 (оценка будет записываться отрицательным числом)
+		//РїСЂРѕРёР·РІРѕРґРёРј РѕС†РµРЅРєСѓ РєР°Р¶РґРѕРіРѕ 0 (РѕС†РµРЅРєР° Р±СѓРґРµС‚ Р·Р°РїРёСЃС‹РІР°С‚СЊСЃСЏ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј С‡РёСЃР»РѕРј)
 		for (unsigned int i = 0; i < getVerticesCount(); ++i) {
 			for (unsigned int j = 0; j < getVerticesCount(); ++j) {
 				if (replica[i][j] <= 0) {
@@ -63,14 +63,14 @@ std::vector<AdjacencyMatrix::Tuple<int, int>>& AdjacencyMatrix::getWayParts() {
 			}
 		}
 
-		//поиск наибольшей оценки (т.к. у нас отрицательные числа, то наименьшей)
+		//РїРѕРёСЃРє РЅР°РёР±РѕР»СЊС€РµР№ РѕС†РµРЅРєРё (С‚.Рє. Сѓ РЅР°СЃ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рµ С‡РёСЃР»Р°, С‚Рѕ РЅР°РёРјРµРЅСЊС€РµР№)
 		int maxGrade = NOVALUE;
 		for (unsigned int i = 0; i < getVerticesCount(); ++i) {
 			int localMin = *min_element(replica[i].begin(), replica[i].end());
 			if (maxGrade > localMin) maxGrade = localMin;
 		}
 
-		//запись найденного пути в итоговый массив - wayParts
+		//Р·Р°РїРёСЃСЊ РЅР°Р№РґРµРЅРЅРѕРіРѕ РїСѓС‚Рё РІ РёС‚РѕРіРѕРІС‹Р№ РјР°СЃСЃРёРІ - wayParts
 		bool isFind = false;
 		for (int i = 0; i < getVerticesCount() && !isFind; ++i) {
 			for (int j = 0; j < getVerticesCount() && !isFind; ++j) {
@@ -81,7 +81,7 @@ std::vector<AdjacencyMatrix::Tuple<int, int>>& AdjacencyMatrix::getWayParts() {
 			}
 		}
 
-		//очистка матрицы от оценок и закрашивание найденного пути
+		//РѕС‡РёСЃС‚РєР° РјР°С‚СЂРёС†С‹ РѕС‚ РѕС†РµРЅРѕРє Рё Р·Р°РєСЂР°С€РёРІР°РЅРёРµ РЅР°Р№РґРµРЅРЅРѕРіРѕ РїСѓС‚Рё
 		for (int i = 0; i < getVerticesCount(); ++i) {
 			for (int j = 0; j < getVerticesCount(); ++j) {
 				if (i == wayParts.back().item1) replica[i][j] = NOVALUE;
@@ -112,12 +112,12 @@ std::vector<int> AdjacencyMatrix::getWay(int startPoint) {
 				}
 			}
 			if (!wayFind) { 
-				throw std::invalid_argument("Не удаётся найти решение задачи коммивояжера для этой точки!"); 
+				throw std::invalid_argument("РќРµ СѓРґР°С‘С‚СЃСЏ РЅР°Р№С‚Рё СЂРµС€РµРЅРёРµ Р·Р°РґР°С‡Рё РєРѕРјРјРёРІРѕСЏР¶РµСЂР° РґР»СЏ СЌС‚РѕР№ С‚РѕС‡РєРё!"); 
 			}
 		}
 		return way;
 	}
-	else throw std::invalid_argument("Такой точки не существует!");
+	else throw std::invalid_argument("РўР°РєРѕР№ С‚РѕС‡РєРё РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚!");
 }
 AdjacencyMatrix::AdjacencyMatrix() {
 }

@@ -2,9 +2,9 @@
 #include "Graph.h"
 using namespace sf;
 
-const int WINDOW_WIDTH = 600; //ширина главного окна
-const int WINDOW_HEIGHT = 600; //высота главного окна
-Font font; //шрифт текста
+const int WINDOW_WIDTH = 600; //С€РёСЂРёРЅР° РіР»Р°РІРЅРѕРіРѕ РѕРєРЅР°
+const int WINDOW_HEIGHT = 600; //РІС‹СЃРѕС‚Р° РіР»Р°РІРЅРѕРіРѕ РѕРєРЅР°
+Font font; //С€СЂРёС„С‚ С‚РµРєСЃС‚Р°
 
 int main() {
 	setlocale(LC_ALL, "ru");
@@ -13,7 +13,7 @@ int main() {
 	settings.antialiasingLevel = 8;
 	font.loadFromFile("vcrosdmonorusbyd.ttf");
 
-	// Объект, который, собственно, является главным окном приложения
+	// РћР±СЉРµРєС‚, РєРѕС‚РѕСЂС‹Р№, СЃРѕР±СЃС‚РІРµРЅРЅРѕ, СЏРІР»СЏРµС‚СЃСЏ РіР»Р°РІРЅС‹Рј РѕРєРЅРѕРј РїСЂРёР»РѕР¶РµРЅРёСЏ
 	RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Graph", sf::Style::Close | sf::Style::Titlebar, settings);
 
 	std::vector<std::vector<int>> matrix = {
@@ -47,7 +47,7 @@ int main() {
 
 	gVertex* moving = nullptr;
 
-	// Главный цикл приложения. Выполняется, пока открыто окно
+	// Р“Р»Р°РІРЅС‹Р№ С†РёРєР» РїСЂРёР»РѕР¶РµРЅРёСЏ. Р’С‹РїРѕР»РЅСЏРµС‚СЃСЏ, РїРѕРєР° РѕС‚РєСЂС‹С‚Рѕ РѕРєРЅРѕ
 	while (window.isOpen())
 	{
 		Vector2i cursorPos = Mouse::getPosition(window);

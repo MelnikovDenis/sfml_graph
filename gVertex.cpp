@@ -1,6 +1,6 @@
 #include "Graph.h"
-float gVertex::VERTEX_RADIUS = 30.f; //радиус окружности вершин
-int gVertex::VERTEX_POINTS = 90; //количество точек при отрисовке вершин
+float gVertex::VERTEX_RADIUS = 30.f; //СЂР°РґРёСѓСЃ РѕРєСЂСѓР¶РЅРѕСЃС‚Рё РІРµСЂС€РёРЅ
+int gVertex::VERTEX_POINTS = 90; //РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕС‡РµРє РїСЂРё РѕС‚СЂРёСЃРѕРІРєРµ РІРµСЂС€РёРЅ
 
 gVertex::gVertex() {
 
@@ -75,7 +75,7 @@ Vector2f gVertex::getPosition() {
 	return Vector2f(circle.getPosition().x, circle.getPosition().y);
 }
 void gVertex::getPolygonSpread(std::vector<gVertex>& vertices, const Vector2f& SPREAD_CENTER, const int& SPREAD_RADIUS) {
-	const float Pi = acosf(-1); //число пи
+	const float Pi = acosf(-1); //С‡РёСЃР»Рѕ РїРё
 	for (int i = 0; i < vertices.size(); ++i) {
 		vertices[i].setPosition(SPREAD_CENTER.x + SPREAD_RADIUS * cosf(2 * Pi * i / vertices.size()),
 			SPREAD_CENTER.y + SPREAD_RADIUS * sinf(2 * Pi * i / vertices.size()));
