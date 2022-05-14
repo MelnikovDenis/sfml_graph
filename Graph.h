@@ -113,6 +113,8 @@ public:
 	std::vector<gVertex> vertices;
 	Graph(std::vector<std::vector<int>>& matrix, const std::vector<std::wstring>& names, 
 		const Font& font, const int& textSize, const Vector2f& SPREAD_CENTER, const int& SPREAD_RADIUS);
+	void loadNewData(std::vector<std::vector<int>>& matrix, const std::vector<std::wstring>& names,
+		const Font& font, const int& textSize, const Vector2f& SPREAD_CENTER, const int& SPREAD_RADIUS);
 	void snapEdgesToVertices();
 	void showHamiltoneCycle();
 };

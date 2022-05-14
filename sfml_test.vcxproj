@@ -140,12 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AdjacencyMatrix.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="gEdge.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="gVertex.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Graph.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

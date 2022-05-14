@@ -103,7 +103,7 @@ int AdjacencyMatrix::getWayLength(std::vector<Tuple<int, int>>& wayParts)const {
 std::vector<int> AdjacencyMatrix::getWay(int startPoint)const {
 	if (startPoint >= 0 && startPoint < matrix.size()) {
 		std::vector<Tuple<int, int>> wayParts = getWayParts();
-		static std::vector<int> way(matrix.size() + 1);
+		std::vector<int> way(matrix.size() + 1);
 		bool wayFind;
 		int currPoint = startPoint;
 

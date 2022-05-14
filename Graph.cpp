@@ -54,3 +54,31 @@ Graph::Graph(std::vector<std::vector<int>>& matrix, const std::vector<std::wstri
 		}
 	}
 }
+void Graph::loadNewData(std::vector<std::vector<int>>& matrix, const std::vector<std::wstring>& names,
+	const Font& font, const int& textSize, const Vector2f& SPREAD_CENTER, const int& SPREAD_RADIUS) {
+	edges.erase(edges.begin(), edges.end());
+
+	this->adjMatrix = AdjacencyMatrix(matrix);
+	vertices = std::vector<gVertex>(adjMatrix.getVerticesCount());
+	for (int i = 0; i < adjMatrix.getVerticesCount(); ++i) {
+		vertices[i] = gVertex(names[i], font, textSize);
+	}
+	gVertex::getPolygonSpread(vertices, SPREAD_CENTER, SPREAD_RADIUS);
+	for (int i = 0; i < adjMatrix.getVerticesCount(); ++i) {
+		for (int j = i + 1; j < adjMatrix.getVerticesCount(); ++j) {
+			if (adjMatrix.matrix[i][j] != NOVALUE && adjMatrix.matrix[j][i] != NOVALUE) {
+				edges.push_back(gEdge(adjMatrix.matrix[i][j], adjMatrix.matrix[j][i], font, textSize));
+				edges.back().setPosition(vertices[i].getCenter(), vertices[j].getCenter());
+			}
+			else if (adjMatrix.matrix[i][j] = NOVALUE && adjMatrix.matrix[j][i] != NOVALUE) {
+				edges.push_back(gEdge(NOVALUE, adjMatrix.matrix[j][i], font, textSize));
+				edges.back().setPosition(vertices[i].getCenter(), vertices[j].getCenter());
+			}
+			else if (adjMatrix.matrix[i][j] != NOVALUE && adjMatrix.matrix[j][i] == NOVALUE) {
+				edges.push_back(gEdge(adjMatrix.matrix[i][j], NOVALUE, font, textSize));
+				edges.back().setPosition(vertices[i].getCenter(), vertices[j].getCenter());
+			}
+
+		}
+	}
+}
