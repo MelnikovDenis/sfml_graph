@@ -12,6 +12,22 @@ void Graph::snapEdgesToVertices() {
 	}
 }
 
+void Graph::showHamiltoneCycle() {
+	std::vector<AdjacencyMatrix::Tuple<int, int>> wayParts = adjMatrix.getWayParts();
+	for (int i = 0; i < wayParts.size(); ++i) {
+		for (int j = 0; j < edges.size(); ++j) {
+			if (edges[j].getStart() == vertices[wayParts[i].item1].getCenter() && 
+				edges[j].getEnd() == vertices[wayParts[i].item2].getCenter()) {
+				edges[j].setFromStartArrowColor(Color::Green);
+			}
+			if (edges[j].getStart() == vertices[wayParts[i].item2].getCenter() &&
+				edges[j].getEnd() == vertices[wayParts[i].item1].getCenter()) {
+				edges[j].setFromEndArrowColor(Color::Green);
+			}
+		}
+	}
+}
+
 Graph::Graph(std::vector<std::vector<int>>& matrix, const std::vector<std::wstring>& names, const Font& font, const int& textSize = 15, 
 	const Vector2f& SPREAD_CENTER = Vector2f(260.f, 260.f), const int& SPREAD_RADIUS = 260) {
 	this->adjMatrix = AdjacencyMatrix(matrix);

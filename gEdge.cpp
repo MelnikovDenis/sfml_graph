@@ -34,6 +34,19 @@ Vector2f gEdge::getEndHalfCenter() {
 	return getCenter(getCenter(mainLine[0].position, mainLine[1].position), mainLine[1].position);
 }
 
+
+void gEdge::setFromStartArrowColor(const Color& c) {
+	fromStartArrow[0].color = c;
+	fromStartArrow[1].color = c;
+	fromStartArrow[2].color = c;
+}
+void gEdge::setFromEndArrowColor(const Color& c) {
+	fromEndArrow[0].color = c;
+	fromEndArrow[1].color = c;
+	fromEndArrow[2].color = c;
+}
+
+
 gEdge::gEdge(const int& fromStartLength, const int& fromEndLength, const Font& font, const int& textSize) {
 	this->fromStartLength = fromStartLength;
 	this->fromEndLength = fromEndLength;
@@ -60,6 +73,12 @@ gEdge::gEdge(const int& fromStartLength, const int& fromEndLength, const Font& f
 }
 Vector2f gEdge::getCenter(const Vector2f& startPoint, const Vector2f& endPoint) {
 	return Vector2f((startPoint.x + endPoint.x) / 2, (startPoint.y + endPoint.y) / 2);
+}
+Vector2f gEdge::getStart() {
+	return mainLine[0].position;
+}
+Vector2f gEdge::getEnd() {
+	return mainLine[1].position;
 }
 void gEdge::setPosition(const Vector2f& startPoint, const Vector2f& endPoint) {
 	const float ARROW_HALF_SIDE = ARROW_HEIGHT / sqrtf(3); //половина длины стороны стрелки

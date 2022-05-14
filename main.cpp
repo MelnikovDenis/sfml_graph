@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <windows.h>
 #include "Graph.h"
 using namespace sf;
 
@@ -7,7 +8,8 @@ const int WINDOW_HEIGHT = 600; //высота главного окна
 Font font; //шрифт текста
 
 int main() {
-	setlocale(LC_ALL, "ru");
+	
+	setlocale(LC_ALL, "en_US.UTF-8");
 
 	ContextSettings settings;
 	settings.antialiasingLevel = 8;
@@ -33,16 +35,18 @@ int main() {
 	};*/
 	std::vector<std::wstring> names = { L"1", L"2", L"3", L"4", L"5", L"6" };
 	Graph g(matrix, names, font, 12, Vector2f(260.f, 260.f), 200);
-	
+	g.showHamiltoneCycle();
 
 	std::vector<AdjacencyMatrix::Tuple<int, int>> wayParts = g.adjMatrix.getWayParts();
+	std::cout << "Отрезки пути гамильтонова цикла:\n";
 	for (int i = 0; i < wayParts.size(); ++i) {
 		std::cout << wayParts[i].item1 + 1 << '\t' << wayParts[i].item2 + 1<< '\n';
 	}
-	std::cout << '\n';
-	std::vector<int> shortCut = g.adjMatrix.getWay(2);
+	std::cout << '\n' << "Замкнутый путь с началом в точке 1: ";
+	std::vector<int> shortCut = g.adjMatrix.getWay(0);
 	for (int i = 0; i < shortCut.size(); ++i) {
-		std::cout << shortCut[i] + 1 << '\t';
+		if (i != shortCut.size() - 1) std::cout << shortCut[i] + 1 << "->";
+		else std::cout << shortCut[i] + 1 << '\n';
 	}
 
 	gVertex* moving = nullptr;

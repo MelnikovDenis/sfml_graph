@@ -1,5 +1,5 @@
 #include "Graph.h"
-bool AdjacencyMatrix::findWay(std::vector<std::vector<int>> matrix) {
+bool AdjacencyMatrix::isNoEmpty(std::vector<std::vector<int>> matrix) {
 	bool isFind = false;
 	for (unsigned int i = 0; i < matrix.size() && !isFind; ++i) {
 		for (unsigned int j = 0; j < matrix.size() && !isFind; ++j) {
@@ -8,16 +8,16 @@ bool AdjacencyMatrix::findWay(std::vector<std::vector<int>> matrix) {
 	}
 	return isFind;
 }
-std::vector<AdjacencyMatrix::Tuple<int, int>>& AdjacencyMatrix::getWayParts() {
+std::vector<AdjacencyMatrix::Tuple<int, int>> AdjacencyMatrix::getWayParts() const {
 	//массив для записи в него результатов (результатом будет пара индксов откуда-куда)
-	static std::vector<Tuple<int, int>> wayParts;
+	std::vector<Tuple<int, int>> wayParts;
 
 	//копия матрицы смежности
 	std::vector<std::vector<int>> replica(getVerticesCount());
 	for (unsigned int i = 0; i < getVerticesCount(); ++i)
 		copy(matrix[i].begin(), matrix[i].end(), back_inserter(replica[i]));
 
-	while (findWay(replica)) {
+	while (isNoEmpty(replica)) {
 		//дополнительный столбец, в котором хранятся минимумы строк
 		std::vector<int> minColumn(getVerticesCount());
 		for (unsigned int i = 0; i < getVerticesCount(); ++i)
@@ -64,38 +64,43 @@ std::vector<AdjacencyMatrix::Tuple<int, int>>& AdjacencyMatrix::getWayParts() {
 		}
 
 		//поиск наибольшей оценки (т.к. у нас отрицательные числа, то наименьшей)
-		int maxGrade = NOVALUE;
+		int maxGrade = NOVALUE; int maxGrade_i = NOVALUE; int maxGrade_j = NOVALUE;
 		for (unsigned int i = 0; i < getVerticesCount(); ++i) {
-			int localMin = *min_element(replica[i].begin(), replica[i].end());
-			if (maxGrade > localMin) maxGrade = localMin;
-		}
-
-		//запись найденного пути в итоговый массив - wayParts
-		bool isFind = false;
-		for (int i = 0; i < getVerticesCount() && !isFind; ++i) {
-			for (int j = 0; j < getVerticesCount() && !isFind; ++j) {
-				if (replica[i][j] == maxGrade) {
-					wayParts.push_back(Tuple<int, int>{i, j});
-					isFind = true;
+			for (unsigned int j = 0; j < getVerticesCount(); ++j) {
+				if (maxGrade > replica[i][j]) {
+					maxGrade = replica[i][j];
+					maxGrade_i = i;
+					maxGrade_j = j;
 				}
 			}
 		}
 
-		//очистка матрицы от оценок и закрашивание найденного пути
+		//запись найденного пути в итоговый массив - wayParts
+		wayParts.push_back(Tuple<int, int>{maxGrade_i, maxGrade_j});
+
+		//очистка матрицы от оценок и столбца, строки и противоположного элемента найденного пути 
 		for (int i = 0; i < getVerticesCount(); ++i) {
 			for (int j = 0; j < getVerticesCount(); ++j) {
-				if (i == wayParts.back().item1) replica[i][j] = NOVALUE;
-				if (j == wayParts.back().item2) replica[i][j] = NOVALUE;
+				if (i == maxGrade_i) replica[i][j] = NOVALUE;
+				if (j == maxGrade_j) replica[i][j] = NOVALUE;
 				if (replica[i][j] < 0) replica[i][j] = 0;
 			}
 		}
+		replica[maxGrade_j][maxGrade_i] = NOVALUE;
 	}
 	return wayParts;
 }
 unsigned int AdjacencyMatrix::getVerticesCount() const {
 	return matrix.size();
 }
-std::vector<int> AdjacencyMatrix::getWay(int startPoint) {
+int AdjacencyMatrix::getWayLength(std::vector<Tuple<int, int>>& wayParts)const {
+	int length = 0;
+	for (int i = 0; i < wayParts.size(); ++i) {
+		length += matrix[wayParts[i].item1][wayParts[i].item2];
+	}
+	return length;
+}
+std::vector<int> AdjacencyMatrix::getWay(int startPoint)const {
 	if (startPoint >= 0 && startPoint < matrix.size()) {
 		std::vector<Tuple<int, int>> wayParts = getWayParts();
 		static std::vector<int> way(matrix.size() + 1);

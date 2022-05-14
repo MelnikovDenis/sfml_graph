@@ -11,21 +11,22 @@ const int NOVALUE = 2147483647; //отсутствие значения
 //матрица смежности графа
 class AdjacencyMatrix {
 private:	
-	static bool findWay(std::vector<std::vector<int>> matrix);
+	static bool isNoEmpty(std::vector<std::vector<int>> matrix);
 public:
 	template<class T1, class T2> struct Tuple {
 		T1 item1;
 		T2 item2;
 	};
-	std::vector<Tuple<int, int>>& getWayParts();
+	std::vector<Tuple<int, int>> getWayParts() const;
 	std::vector<std::vector<int>> matrix; //матрица смежности
 
 	AdjacencyMatrix();
 	AdjacencyMatrix& operator=(const AdjacencyMatrix& adjMatrix);
+	int getWayLength(std::vector<Tuple<int, int>>& wayParts)const;
 	AdjacencyMatrix(std::vector<std::vector<int>>& matrix);
 	AdjacencyMatrix(const AdjacencyMatrix& adjMatrix);
 	unsigned int getVerticesCount() const;
-	std::vector<int> getWay(int startPoint);
+	std::vector<int> getWay(int startPoint) const;
 };
 
 //вершина графа
@@ -88,15 +89,18 @@ private:
 	Vector2f getStartHalfCenter();
 	//центр второй половины от старта (там будет размещаться текст)
 	Vector2f getEndHalfCenter();
+	static Vector2f getCenter(const Vector2f& startPoint, const Vector2f& endPoint);
 
 public:
 	//значение веса ребра
 	int fromStartLength = NOVALUE;
 	int fromEndLength = NOVALUE;
+	void setFromStartArrowColor(const Color& c);
+	void setFromEndArrowColor(const Color& c);
 
-	gEdge(const int& fromStartLength, const int& fromEndLength, const Font& font, const int& textSize);
-
-	Vector2f getCenter(const Vector2f& startPoint, const Vector2f& endPoint);
+	gEdge(const int& fromStartLength, const int& fromEndLength, const Font& font, const int& textSize);	
+	Vector2f getStart();
+	Vector2f getEnd();
 	void setPosition(const Vector2f& startPoint, const Vector2f& endPoint);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -110,6 +114,7 @@ public:
 	Graph(std::vector<std::vector<int>>& matrix, const std::vector<std::wstring>& names, 
 		const Font& font, const int& textSize, const Vector2f& SPREAD_CENTER, const int& SPREAD_RADIUS);
 	void snapEdgesToVertices();
+	void showHamiltoneCycle();
 };
 
 
