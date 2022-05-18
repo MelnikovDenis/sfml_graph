@@ -85,9 +85,12 @@ std::vector<std::vector<int>> inputMatrix(std::vector<std::wstring>& names) {
 	std::vector<std::vector<int>> matrix(verticiesCount);
 	for (int i = 0; i < verticiesCount; ++i) {
 		matrix[i] = std::vector<int>(verticiesCount);
-	}
+	}	
 	names.erase(names.begin(), names.end());
 	names.resize(verticiesCount);
+	for (int i = 0; i < verticiesCount; ++i) {
+		names[i] = std::to_wstring(i + 1);
+	}
 	int temp = 0;
 	for (int i = 0; i < verticiesCount; ++i) {
 		for (int j = 0; j < verticiesCount; ++j) {
