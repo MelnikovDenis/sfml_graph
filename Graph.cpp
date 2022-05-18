@@ -42,7 +42,7 @@ Graph::Graph(std::vector<std::vector<int>>& matrix, const std::vector<std::wstri
 				edges.push_back(gEdge(adjMatrix.matrix[i][j], adjMatrix.matrix[j][i], font, textSize));
 				edges.back().setPosition(vertices[i].getCenter(), vertices[j].getCenter());
 			}
-			else if (adjMatrix.matrix[i][j] = NOVALUE && adjMatrix.matrix[j][i] != NOVALUE) {
+			else if (adjMatrix.matrix[i][j] == NOVALUE && adjMatrix.matrix[j][i] != NOVALUE) {
 				edges.push_back(gEdge(NOVALUE, adjMatrix.matrix[j][i], font, textSize));
 				edges.back().setPosition(vertices[i].getCenter(), vertices[j].getCenter());
 			}

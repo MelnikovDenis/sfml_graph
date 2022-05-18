@@ -48,6 +48,7 @@ public:
 	void setPosition(float x, float y);
 	static void getMoving(gVertex*& moving, std::vector<gVertex>& vertices, const Event& event, const Vector2i& cursorPos);
 	static void move(gVertex*& moving, const Vector2i& cursorPos, const int& window_width, const int& window_height);
+
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	FloatRect getGlobalBounds();
 	FloatRect getLocalBounds();
